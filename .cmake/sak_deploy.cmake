@@ -38,6 +38,8 @@ function(sak_auto_execute_windeployqt target)
                 $<TARGET_FILE_DIR:${target}>
         COMMAND ${CMAKE_COMMAND} -E copy_if_different "${COMPILER_PATH}/MSVCP140_2.dll"
                 $<TARGET_FILE_DIR:${target}>
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_BINARY_DIR}/3rd/qmdnsengine-master/src/qmdnsengine.dll"
+                $<TARGET_FILE_DIR:${target}>
         VERBATIM)
     endif()
   endif()
