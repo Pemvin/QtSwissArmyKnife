@@ -1,32 +1,18 @@
-include(${CMAKE_SOURCE_DIR}/.cmake/sak_common.cmake)
+if(NOT Qt6_VERSION VERSION_LESS "6.5.0")
+  if(EXISTS ${CMAKE_SOURCE_DIR}/src/private/private)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/src/private/private)
 
-file(
-  GLOB dirs
-  LIST_DIRECTORIES true
-  "${CMAKE_CURRENT_SOURCE_DIR}/*")
-list(REMOVE_ITEM dirs "common")
-set(SAK_HAS_PRIVATE_MODULE false)
-
-foreach(dir ${dirs})
-  if(IS_DIRECTORY ${dir})
-    if(NOT ${SAK_HAS_PRIVATE_MODULE})
-      set(SAK_HAS_PRIVATE_MODULE true)
-    endif()
+    add_custom_target(
+      PullPrivateModules
+      COMMAND git pull ${GITEE_URL}
+      SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/readme.md
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/private/private)
   endif()
-endforeach()
 
-foreach(dir ${dirs})
-  if(IS_DIRECTORY ${dir})
-    file(RELATIVE_PATH cooked_dir ${CMAKE_SOURCE_DIR} ${dir})
-    add_subdirectory(${CMAKE_SOURCE_DIR}/${cooked_dir})
-  endif()
-endforeach()
-
-add_custom_target(
-  Clone
-  COMMAND git clone https://gitee.com/qsaker-qsak/fluent2.git ./fluent2
-  COMMAND git clone https://gitee.com/qsaker-qsak/keygen.git ./keygen
-  COMMAND git clone https://gitee.com/qsaker-qsak/easydebug.git ./easydebug
-  COMMAND git clone https://gitee.com/qsaker-qsak/dataflowstudio.git ./dataflowstudio
-  SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/readme.md
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/private)
+  set(GITEE_URL "https://gitee.com/qsaker/QtSwissArmyKnifePrivate.git")
+  add_custom_target(
+    ClonePrivateModules
+    COMMAND git clone ${GITEE_URL} ./private || echo "clone private modules"
+    SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/readme.md
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/private)
+endif()

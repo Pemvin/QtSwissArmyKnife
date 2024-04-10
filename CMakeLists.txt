@@ -47,6 +47,7 @@ include(.cmake/sak_font_fontawesome.cmake)
 include(.cmake/sak_installer.cmake)
 
 include(.cmake/sak_3rd_glog.cmake)
+include(.cmake/sak_3rd_qt_aes.cmake)
 include(.cmake/sak_3rd_nodeeditor.cmake)
 include(.cmake/sak_3rd_qmdnsengine.cmake)
 
@@ -66,9 +67,10 @@ if(SAK_USING_GLOG)
   set(WITH_GTEST OFF)
   set(WITH_GFLAGS OFF)
 
-  sak_add_subdirectory("glog-master")
+  sak_add_subdirectory("glog-0.7.0")
 endif()
 
+sak_add_subdirectory("Qt-AES-master")
 sak_add_subdirectory("qmdnsengine-master")
 
 macro(sak_import_assistant assistant_dir_name)
